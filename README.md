@@ -1,6 +1,6 @@
 # Olist E-Commerce Analytics — Power BI End-to-End Project
 
-Part of the **Sandeep Rana** YouTube series — *Beyond Basic Dashboards.*
+Part of the [Sandeep Rana](https://www.youtube.com/@SandeepSinghRana502/) YouTube series — *Beyond Basic Dashboards.*
 
 A production-style Power BI project built on the public [Olist Brazilian E-Commerce dataset](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce). The focus is on **correct grain, a clean star schema, and DAX-driven logic** (no calculated columns in fact tables, minimal Power Query transformation).
 
@@ -137,7 +137,7 @@ Power BI Desktop · DAX · Power Query · Power BI Modeling MCP Server · Claude
 
 ## Series
 
-Full tutorial series on the **Sandeep Rana** YouTube channel.
+Full tutorial series on the [Sandeep Rana](https://www.youtube.com/@SandeepSinghRana502/) YouTube channel.
 
 ## Author
 
