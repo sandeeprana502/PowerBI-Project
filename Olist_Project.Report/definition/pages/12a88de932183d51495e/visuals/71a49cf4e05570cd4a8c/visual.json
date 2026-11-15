@@ -47,6 +47,20 @@
               },
               "queryRef": "_Measures.Merchandise Revenue",
               "nativeQueryRef": "Merchandise Revenue"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Revenue by Delivery Date"
+                }
+              },
+              "queryRef": "_Measures.Revenue by Delivery Date",
+              "nativeQueryRef": "Revenue by Delivery Date"
             }
           ]
         }
@@ -143,7 +157,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Revenue by Month'"
+                  "Value": "'Purchase Vs Revenue by Month'"
                 }
               }
             },
