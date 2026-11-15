@@ -1,0 +1,14 @@
+expression DIM_Product_Translation =
+		let
+		    Source = Csv.Document(File.Contents("C:\Users\SANDE\Downloads\Data Architect Stuffs\Dataset - Brazil E-Commerce\product_category_name_translation.csv"),[Delimiter=",", Columns=2, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+		    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Column1", type text}, {"Column2", type text}}),
+		    #"Promoted Headers" = Table.PromoteHeaders(#"Changed Type", [PromoteAllScalars=true]),
+		    #"Changed Type1" = Table.TransformColumnTypes(#"Promoted Headers",{{"product_category_name", type text}, {"product_category_name_english", type text}})
+		in
+		    #"Changed Type1"
+	lineageTag: 89b8a9d1-3f22-485a-b87e-0c7d7d8cce9a
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

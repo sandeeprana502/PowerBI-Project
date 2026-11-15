@@ -1,0 +1,144 @@
+table _Measures
+	lineageTag: ab86d5e6-19bc-4c71-8598-556ba509d278
+
+	measure 'Total Orders' = DISTINCTCOUNT ( FACT_Orders[order_id] )
+		formatString: #,0
+		lineageTag: 453fca0e-96ef-4981-b9e5-9a672bd9bd26
+
+	measure 'Merchandise Revenue' = SUM ( FACT_Order_Items[price] )
+		formatString: #,0
+		lineageTag: ccb1b34f-6800-40b3-bf31-1356700a8bda
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Freight Value' = SUM ( FACT_Order_Items[freight_value] )
+		formatString: #,0
+		lineageTag: d8b09495-e2c6-42b2-aa84-7b40ae0086de
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Gross Sales' = [Merchandise Revenue] + [Freight Value]
+		formatString: #,0
+		lineageTag: eb4ce07a-e56a-44e1-b626-c8c650696cd4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Delivered Orders' =
+			
+			CALCULATE ( [Total Orders], FACT_Orders[order_status] = "delivered" )
+		formatString: 0
+		lineageTag: dd99e6fa-7f57-487d-9c47-f2f81f3fdc27
+
+	measure 'Average Order Value (Item Price)' =
+			
+			DIVIDE ( [Merchandise Revenue], [Total Orders] )
+		lineageTag: 40f6ae32-0346-46cd-a501-5c5bb375873a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg Delivery Minutes' =
+			
+			AVERAGEX (
+			    FILTER ( FACT_Orders, NOT ISBLANK ( FACT_Orders[order_delivered_customer_date] ) ),
+			    DATEDIFF ( FACT_Orders[order_purchase_timestamp], FACT_Orders[order_delivered_customer_date], MINUTE )
+			)
+		formatString: 0.00
+		lineageTag: ac0c1233-aa6b-490b-94c9-6a480f517d74
+
+	measure 'Late Orders' =
+			
+			COUNTROWS (
+			    FILTER (
+			        FACT_Orders,
+			        NOT ISBLANK ( FACT_Orders[order_delivered_customer_date] )
+			            && FACT_Orders[order_delivered_customer_date] > FACT_Orders[order_estimated_delivery_date]
+			    )
+			)
+		formatString: 0
+		lineageTag: cf57db76-2f4a-4d3f-a770-f464c8daa246
+
+	measure 'Late Delivery %' = DIVIDE ( [Late Orders], [Delivered Orders] )
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: a5476eb7-1094-45da-8865-cc1b0778a14a
+
+	measure 'Revenue PY' = CALCULATE ( [Merchandise Revenue], SAMEPERIODLASTYEAR ( DIM_Date[Date] ) )
+		lineageTag: 3b7e214c-f369-4622-892a-36656bdd39dc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Revenue by Delivery Date' =
+			
+			CALCULATE ( [Merchandise Revenue], USERELATIONSHIP ( DIM_Date[Date], FACT_Orders[order_delivered_customer_date] ) )
+		lineageTag: 1efc7837-c8ee-4f80-9ef5-23a6e602a5d7
+
+	measure 'Category Rank' =
+			
+			RANKX ( ALLSELECTED ( DIM_Product[Product_Category_English_Name] ), [Merchandise Revenue] )
+		formatString: 0
+		lineageTag: 78c9686d-39b7-46d2-8c26-533d2f4c988d
+
+	measure 'Payment Value' = SUM ( FACT_Payment[payment_value] )
+		formatString: #,0
+		lineageTag: e6abab8b-fc97-41a8-a0e3-abf3aca55af2
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg Review Score' = AVERAGE ( FACT_Reviews[review_score] )
+		lineageTag: 0f4da72a-68ac-4207-9942-9fb38b352fe7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Dynamic Title' = ```
+			"Sales/Revenue for " & SELECTEDVALUE(DIM_Date[Year], "All Years") 
+			```
+		lineageTag: 4c4689a2-7b47-4ea3-bcf2-b47b474fd704
+
+	measure 'Items Sold' = COUNTROWS ( FACT_Order_Items )
+		formatString: #,0
+		lineageTag: 6a16012f-1475-40a1-82b6-29fb351f2b94
+
+	measure 'Unique Customers' =
+			CALCULATE (
+			    DISTINCTCOUNT ( DIM_Customer[customer_unique_id] ),
+			    CROSSFILTER ( FACT_Orders[customer_id], DIM_Customer[customer_id], BOTH )
+			)
+		formatString: #,0
+		lineageTag: ed9bacdc-504c-41c4-82ac-7c938ebe1b9c
+
+	measure 'Freight % of Revenue' = DIVIDE ( [Freight Value], [Merchandise Revenue] )
+		formatString: 0.0%
+		lineageTag: 1e5f0c9f-5c4c-41f7-83a5-f06a349d45bf
+
+	measure 'Avg Estimated Minutes' =
+			AVERAGEX (
+			    FILTER ( FACT_Orders, NOT ISBLANK ( FACT_Orders[order_estimated_delivery_date] ) ),
+			    DATEDIFF ( FACT_Orders[order_purchase_timestamp], FACT_Orders[order_estimated_delivery_date], MINUTE )
+			)
+		formatString: 0.00
+		lineageTag: a577a307-b3ce-4107-bd4b-8babc1e6c52b
+
+	measure 'On-Time %' = 1 - [Late Delivery %]
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 7d35977f-a54a-452e-86d0-bc08c78d0e2a
+
+	measure 'Review Count' = COUNTROWS ( FACT_Reviews )
+		formatString: 0
+		lineageTag: fb523f5e-3091-440e-a1af-6fe374f5ccf0
+
+	column Placeholder
+		lineageTag: 50334875-0834-42fb-b591-fea469366ae5
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Placeholder]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _Measures = calculated
+		mode: import
+		source = ```
+				DATATABLE ( "Placeholder", STRING, { { "" } } )
+				
+				```
+
+	annotation PBI_Id = 7d864286feb14a4ab558303e53bc6827
+

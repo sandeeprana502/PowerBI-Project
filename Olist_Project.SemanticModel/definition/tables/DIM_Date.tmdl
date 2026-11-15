@@ -1,0 +1,113 @@
+table DIM_Date
+	lineageTag: e4deb458-8c44-4de1-b8c8-051ffcd1d0ef
+	dataCategory: Time
+
+	column Date
+		isKey
+		formatString: General Date
+		lineageTag: da56c315-d4c3-478a-9b34-473d3f41ff98
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		formatString: 0
+		lineageTag: 400b7580-4018-4f8c-9cf5-3ac9d434261b
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		lineageTag: 0848e939-2095-4399-8f63-deece3dd97b2
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Quarter]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Number'
+		formatString: 0
+		lineageTag: 0d00c067-2215-43ac-8828-c997eedb0f2c
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Month Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Name'
+		lineageTag: bf03bda3-c950-45fe-9a5b-722de7253256
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Month Name]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year-Month
+		lineageTag: eae3bf36-15c8-4a3d-b206-40a27bbeaf88
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Year-Month]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year-Month Sort'
+		formatString: 0
+		lineageTag: cea3e4e7-bbfa-4457-b4cd-23d021e3ba40
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Year-Month Sort]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day of Week Number'
+		formatString: 0
+		lineageTag: 21b781b7-b02b-4c1b-9fe2-9c858480521c
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Day of Week Number]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day Name'
+		lineageTag: f1eeb9fb-ed6e-4a43-9d1f-e9539a6dc9c1
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Day Name]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Is Weekend'
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 13f88cfd-3583-4ce9-a9ba-883d59198772
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Is Weekend]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DIM_Date = calculated
+		mode: import
+		source =
+				
+				VAR MinDate = DATE ( YEAR ( MIN ( FACT_Orders[order_purchase_timestamp] ) ), 1, 1 )
+				VAR MaxDate = DATE ( YEAR ( MAX ( FACT_Orders[order_purchase_timestamp] ) ), 12, 31 )
+				RETURN
+				ADDCOLUMNS (
+				    CALENDAR ( MinDate, MaxDate ),
+				    "Year", YEAR ( [Date] ),
+				    "Quarter", "Q" & QUARTER ( [Date] ),
+				    "Month Number", MONTH ( [Date] ),
+				    "Month Name", FORMAT ( [Date], "MMM" ),
+				    "Year-Month", FORMAT ( [Date], "YYYY-MM" ),
+				    "Year-Month Sort", YEAR ( [Date] ) * 100 + MONTH ( [Date] ),
+				    "Day of Week Number", WEEKDAY ( [Date], 2 ),
+				    "Day Name", FORMAT ( [Date], "ddd" ),
+				    "Is Weekend", IF ( WEEKDAY ( [Date], 2 ) > 5, TRUE (), FALSE () )
+				)
+
+	annotation PBI_Id = 57634e3f13c44edcbde63e4c34f58c4f
+

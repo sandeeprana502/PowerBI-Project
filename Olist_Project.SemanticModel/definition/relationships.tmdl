@@ -1,0 +1,33 @@
+relationship AutoDetected_48506eaf-ca7f-417d-aaaa-0438dc8dc850
+	fromColumn: FACT_Order_Items.order_id
+	toColumn: FACT_Orders.order_id
+
+relationship AutoDetected_00747a9b-5abc-42dc-bb26-f68d5e580aeb
+	fromColumn: FACT_Payment.order_id
+	toColumn: FACT_Orders.order_id
+
+relationship AutoDetected_b406a483-b1ed-46cf-88fe-9efa6d5b1f3c
+	fromColumn: FACT_Reviews.order_id
+	toColumn: FACT_Orders.order_id
+
+relationship AutoDetected_4d53423f-c306-4816-b9f2-f2568a93acc1
+	fromColumn: FACT_Order_Items.product_id
+	toColumn: DIM_Product.product_id
+
+relationship AutoDetected_ab0b12fc-77c2-4700-bb4f-e032d64a0969
+	fromColumn: FACT_Order_Items.seller_id
+	toColumn: DIM_Seller.seller_id
+
+relationship 2ad7fcb7-9781-1a6a-389a-532ae17afe86
+	fromColumn: FACT_Orders.customer_id
+	toColumn: DIM_Customer.customer_id
+
+relationship 9eed2176-a13c-1719-b393-17139a5ff70f
+	fromColumn: FACT_Orders.order_purchase_timestamp
+	toColumn: DIM_Date.Date
+
+relationship 60739665-8103-15b2-ed02-f545c0cc4c91
+	isActive: false
+	fromColumn: FACT_Orders.order_delivered_customer_date
+	toColumn: DIM_Date.Date
+

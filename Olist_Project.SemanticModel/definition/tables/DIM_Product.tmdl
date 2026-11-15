@@ -1,0 +1,107 @@
+table DIM_Product
+	lineageTag: 5124ffd3-3d20-49b0-893a-c15ee6e1540c
+
+	column product_id
+		dataType: string
+		lineageTag: 5dd261ff-68b1-453d-a674-57d42e33580d
+		summarizeBy: none
+		sourceColumn: product_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_category_name
+		dataType: string
+		lineageTag: 2038c3f5-7ecb-436e-8876-c5c9cf9e4179
+		summarizeBy: none
+		sourceColumn: product_category_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_name_lenght
+		dataType: int64
+		formatString: 0
+		lineageTag: 4f25d60c-f277-41b5-afa0-d8268b9f6272
+		summarizeBy: none
+		sourceColumn: product_name_lenght
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_description_lenght
+		dataType: int64
+		formatString: 0
+		lineageTag: 3b09a026-7b4e-4433-beda-78a8e9f72772
+		summarizeBy: none
+		sourceColumn: product_description_lenght
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_photos_qty
+		dataType: int64
+		formatString: 0
+		lineageTag: d9cb250d-5729-4647-a728-e29c12954992
+		summarizeBy: none
+		sourceColumn: product_photos_qty
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_weight_g
+		dataType: int64
+		formatString: 0
+		lineageTag: ba893dbf-2f9d-447b-aba9-ca1d37faa04f
+		summarizeBy: none
+		sourceColumn: product_weight_g
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_length_cm
+		dataType: int64
+		formatString: 0
+		lineageTag: 8767c2bb-20a6-4f85-aa12-db8014242758
+		summarizeBy: none
+		sourceColumn: product_length_cm
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_height_cm
+		dataType: int64
+		formatString: 0
+		lineageTag: 063cdf5b-c047-45e2-b8ba-cd068981dec3
+		summarizeBy: none
+		sourceColumn: product_height_cm
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_width_cm
+		dataType: int64
+		formatString: 0
+		lineageTag: cc732274-1fde-4e6f-996e-d67558f04f42
+		summarizeBy: none
+		sourceColumn: product_width_cm
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_Category_English_Name
+		dataType: string
+		lineageTag: 480bc6a3-0d31-4ace-9e90-fb36571054f1
+		summarizeBy: none
+		sourceColumn: Product_Category_English_Name
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DIM_Product = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\SANDE\Downloads\Data Architect Stuffs\Dataset - Brazil E-Commerce\olist_products_dataset.csv"),[Delimiter=",", Columns=9, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"product_id", type text}, {"product_category_name", type text}, {"product_name_lenght", Int64.Type}, {"product_description_lenght", Int64.Type}, {"product_photos_qty", Int64.Type}, {"product_weight_g", Int64.Type}, {"product_length_cm", Int64.Type}, {"product_height_cm", Int64.Type}, {"product_width_cm", Int64.Type}}),
+				    #"Merged Queries" = Table.NestedJoin(#"Changed Type", {"product_category_name"}, DIM_Product_Translation, {"product_category_name"}, "DIM_Product_Translation", JoinKind.LeftOuter),
+				    #"Expanded DIM_Product_Translation" = Table.ExpandTableColumn(#"Merged Queries", "DIM_Product_Translation", {"product_category_name_english"}, {"DIM_Product_Translation.product_category_name_english"}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Expanded DIM_Product_Translation",{{"DIM_Product_Translation.product_category_name_english", "Product_Category_English_Name"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

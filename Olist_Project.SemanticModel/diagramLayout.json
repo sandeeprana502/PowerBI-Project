@@ -1,0 +1,167 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 1303.125,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 917.25,
+            "y": 0
+          },
+          "nodeIndex": "DIM_Product",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 158,
+            "y": 0
+          },
+          "nodeIndex": "FACT_Order_Items",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 237.375,
+            "y": 457.3125
+          },
+          "nodeIndex": "FACT_Payment",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 540,
+            "y": 0
+          },
+          "nodeIndex": "FACT_Reviews",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 695.75,
+            "y": 430.75
+          },
+          "nodeIndex": "FACT_Orders",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1313.75,
+            "y": 0
+          },
+          "nodeIndex": "DIM_Seller",
+          "size": {
+            "height": 249.4375,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1034.3541984558105,
+            "y": 585.9375
+          },
+          "nodeIndex": "DIM_Customer",
+          "size": {
+            "height": 226.5625,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1475.0833253860474,
+            "y": 306.25
+          },
+          "nodeIndex": "DIM_Date",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1601.0833253860474,
+            "y": 306.25
+          },
+          "nodeIndex": "_Measures",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1853.0833253860474,
+            "y": 0
+          },
+          "nodeIndex": "Time View",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1979.0833253860474,
+            "y": 354.25
+          },
+          "nodeIndex": "Unit Conversion",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1919.1458253860474,
+            "y": 170.375
+          },
+          "nodeIndex": "Calculation group",
+          "nodeLineageTag": "aa584d5d-3bac-463e-8f26-9e179e9c407b",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 64,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

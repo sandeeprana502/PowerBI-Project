@@ -1,0 +1,59 @@
+table FACT_Payment
+	lineageTag: a33f6022-8309-4edb-a2c7-83462df4e031
+
+	column order_id
+		dataType: string
+		lineageTag: 90ae1e1d-50a6-4deb-bb9c-39ee478498a5
+		summarizeBy: none
+		sourceColumn: order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column payment_sequential
+		dataType: int64
+		formatString: 0
+		lineageTag: b4d310b8-1310-463f-9093-c55bd9e05803
+		summarizeBy: sum
+		sourceColumn: payment_sequential
+
+		annotation SummarizationSetBy = Automatic
+
+	column payment_type
+		dataType: string
+		lineageTag: f6bf2444-7abb-46b0-b3a8-76fe05bd257e
+		summarizeBy: none
+		sourceColumn: payment_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column payment_installments
+		dataType: int64
+		formatString: 0
+		lineageTag: 703edca6-38c5-47c0-b7fb-c0ecf57236b6
+		summarizeBy: sum
+		sourceColumn: payment_installments
+
+		annotation SummarizationSetBy = Automatic
+
+	column payment_value
+		dataType: double
+		lineageTag: 8fcf69d0-f75c-4867-89c1-2166910886e7
+		summarizeBy: sum
+		sourceColumn: payment_value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition FACT_Payment = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\SANDE\Downloads\Data Architect Stuffs\Dataset - Brazil E-Commerce\olist_order_payments_dataset.csv"),[Delimiter=",", Columns=5, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"order_id", type text}, {"payment_sequential", Int64.Type}, {"payment_type", type text}, {"payment_installments", Int64.Type}, {"payment_value", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

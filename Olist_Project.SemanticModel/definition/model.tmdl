@@ -1,0 +1,29 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	discourageImplicitMeasures
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["FACT_Order_Items","FACT_Payment","FACT_Reviews","FACT_Orders","DIM_Product","DIM_Seller","DIM_Product_Translation","DIM_Customer"]
+
+annotation __PBI_TimeIntelligenceEnabled = 0
+
+annotation PBI_ProTooling = ["DaxQueryView_Desktop","MCP-PBIModeling","CalcGroup","DevMode"]
+
+ref table FACT_Order_Items
+ref table FACT_Payment
+ref table FACT_Reviews
+ref table FACT_Orders
+ref table DIM_Product
+ref table DIM_Seller
+ref table DIM_Customer
+ref table DIM_Date
+ref table _Measures
+ref table 'Time View'
+ref table 'Unit Conversion'
+
+ref cultureInfo en-US
+

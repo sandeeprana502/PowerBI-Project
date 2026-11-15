@@ -1,0 +1,22 @@
+table 'Time View'
+	lineageTag: 9a1003b6-692f-45b0-83d8-7d96a4fc94e3
+
+	/// Monthly (as-is) vs YTD view applied to any measure. Time-intelligence measures are excluded.
+	calculationGroup
+		precedence: 10
+
+		calculationItem Monthly = SELECTEDMEASURE ()
+
+		calculationItem YTD =
+				IF (
+				    ISSELECTEDMEASURE ( [Dynamic Title], [Category Rank] ),
+				    SELECTEDMEASURE (),
+				    CALCULATE ( SELECTEDMEASURE (), DATESYTD ( DIM_Date[Date] ) )
+				)
+
+	column 'Time View'
+		dataType: string
+		lineageTag: bc259a79-0772-4361-bed0-89ec4f733c27
+
+	partition 'Partition_Time View' = calculationGroup
+

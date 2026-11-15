@@ -1,0 +1,48 @@
+table DIM_Seller
+	lineageTag: bc565191-59e8-4c59-86a3-00a6fee4f56e
+
+	column seller_id
+		dataType: string
+		lineageTag: 1074584b-573a-417e-85fc-e3ff14f69f8c
+		summarizeBy: none
+		sourceColumn: seller_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column seller_zip_code_prefix
+		dataType: int64
+		formatString: 0
+		lineageTag: 019de9c8-d927-4be5-a0bf-22b504672ecc
+		summarizeBy: none
+		sourceColumn: seller_zip_code_prefix
+
+		annotation SummarizationSetBy = Automatic
+
+	column seller_city
+		dataType: string
+		lineageTag: acb85ffb-c0eb-46da-8717-e5c7fcd4fd12
+		summarizeBy: none
+		sourceColumn: seller_city
+
+		annotation SummarizationSetBy = Automatic
+
+	column seller_state
+		dataType: string
+		lineageTag: 7c876b60-36b1-49d7-8a85-3f9ab204d9af
+		summarizeBy: none
+		sourceColumn: seller_state
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DIM_Seller = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\SANDE\Downloads\Data Architect Stuffs\Dataset - Brazil E-Commerce\olist_sellers_dataset.csv"),[Delimiter=",", Columns=4, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"seller_id", type text}, {"seller_zip_code_prefix", Int64.Type}, {"seller_city", type text}, {"seller_state", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

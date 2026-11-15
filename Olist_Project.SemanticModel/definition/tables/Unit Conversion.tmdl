@@ -1,0 +1,50 @@
+table 'Unit Conversion'
+	lineageTag: 6986cba9-4440-4a67-af86-af1a92f68a5f
+
+	/// Display unit (Actual / K / M) applied through dynamic format strings; values are unchanged.
+	calculationGroup
+		precedence: 5
+
+		calculationItem Actual = SELECTEDMEASURE ()
+
+			formatStringDefinition =
+					IF (
+					    ISSELECTEDMEASURE ( [Merchandise Revenue], [Freight Value], [Gross Sales], [Payment Value], [Revenue PY], [Revenue by Delivery Date], [Total Orders], [Items Sold], [Unique Customers], [Delivered Orders], [Late Orders], [Review Count] ),
+					    "#,0",
+					    SELECTEDMEASUREFORMATSTRING ()
+					)
+
+		calculationItem K =
+				IF (
+				    ISSELECTEDMEASURE ( [Merchandise Revenue], [Freight Value], [Gross Sales], [Payment Value], [Revenue PY], [Revenue by Delivery Date], [Total Orders], [Items Sold], [Unique Customers], [Delivered Orders], [Late Orders], [Review Count],[Avg Delivery Minutes],[Avg Estimated Minutes] ),
+				    DIVIDE ( SELECTEDMEASURE (), 1000 ),
+				    SELECTEDMEASURE ()
+				)
+
+			formatStringDefinition =
+					IF (
+					    ISSELECTEDMEASURE ( [Merchandise Revenue], [Freight Value], [Gross Sales], [Payment Value], [Revenue PY], [Revenue by Delivery Date], [Total Orders], [Items Sold], [Unique Customers], [Delivered Orders], [Late Orders], [Review Count] ),
+					    "#,0.0""K""",
+					    SELECTEDMEASUREFORMATSTRING ()
+					)
+
+		calculationItem M =
+				IF (
+				    ISSELECTEDMEASURE ( [Merchandise Revenue], [Freight Value], [Gross Sales], [Payment Value], [Revenue PY], [Revenue by Delivery Date], [Total Orders], [Items Sold], [Unique Customers], [Delivered Orders], [Late Orders], [Review Count],[Avg Delivery Minutes],[Avg Estimated Minutes] ),
+				    DIVIDE ( SELECTEDMEASURE (), 1000000 ),
+				    SELECTEDMEASURE ()
+				)
+
+			formatStringDefinition =
+					IF (
+					    ISSELECTEDMEASURE ( [Merchandise Revenue], [Freight Value], [Gross Sales], [Payment Value], [Revenue PY], [Revenue by Delivery Date], [Total Orders], [Items Sold], [Unique Customers], [Delivered Orders], [Late Orders], [Review Count] ),
+					    "#,0.00""M""",
+					    SELECTEDMEASUREFORMATSTRING ()
+					)
+
+	column 'Unit Conversion'
+		dataType: string
+		lineageTag: 45b3ac22-69ef-4d69-b28d-e860ba303143
+
+	partition 'Partition_Unit Conversion' = calculationGroup
+

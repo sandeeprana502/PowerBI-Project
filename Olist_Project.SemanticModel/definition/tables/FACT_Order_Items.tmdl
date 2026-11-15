@@ -1,0 +1,77 @@
+table FACT_Order_Items
+	lineageTag: 022f0c7d-91a8-49fd-9a4a-0f0cab3ce74a
+
+	column order_id
+		dataType: string
+		lineageTag: 5bfd86c8-e356-4d76-9778-50c8107c95a7
+		summarizeBy: none
+		sourceColumn: order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_item_id
+		dataType: string
+		lineageTag: 302ae3d2-d07b-4753-b8b5-9ff198d22460
+		summarizeBy: none
+		sourceColumn: order_item_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column product_id
+		dataType: string
+		lineageTag: 1e0222b4-0342-4b36-bd88-16cf64ef0290
+		summarizeBy: none
+		sourceColumn: product_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column seller_id
+		dataType: string
+		lineageTag: aeb0b2f4-f8b3-44b3-9796-d418b72f68f7
+		summarizeBy: none
+		sourceColumn: seller_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column shipping_limit_date
+		dataType: string
+		lineageTag: d5d3ec40-433c-4a05-bee3-847d8f1614ee
+		summarizeBy: none
+		sourceColumn: shipping_limit_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column price
+		dataType: double
+		lineageTag: 61503720-0c83-412b-ab14-ff399aac6b9d
+		summarizeBy: sum
+		sourceColumn: price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column freight_value
+		dataType: double
+		lineageTag: eed1f0dd-62c4-4536-9af6-6f36523969bd
+		summarizeBy: sum
+		sourceColumn: freight_value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition FACT_Order_Items = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\SANDE\Downloads\Data Architect Stuffs\Dataset - Brazil E-Commerce\olist_order_items_dataset.csv"),[Delimiter=",", Columns=7, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"price", type number}, {"freight_value", type number}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

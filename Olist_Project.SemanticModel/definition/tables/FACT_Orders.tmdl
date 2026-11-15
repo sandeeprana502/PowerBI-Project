@@ -1,0 +1,101 @@
+table FACT_Orders
+	lineageTag: c42cc7c1-cfe6-4863-a22a-0f5a75291676
+
+	column order_id
+		dataType: string
+		lineageTag: 1e894679-22c4-43e2-90f7-3f7212dc3f14
+		summarizeBy: none
+		sourceColumn: order_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column customer_id
+		dataType: string
+		lineageTag: 9043be77-f620-4361-bb4a-db7e90eb53b7
+		summarizeBy: none
+		sourceColumn: customer_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_status
+		dataType: string
+		lineageTag: b1debda5-ea16-4a43-b2c0-dc9b285dfcaa
+		summarizeBy: none
+		sourceColumn: order_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column order_purchase_timestamp
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 94cf2c67-9bab-4bfa-b4ff-93502e3b9825
+		summarizeBy: none
+		sourceColumn: order_purchase_timestamp
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column order_approved_at
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: ef4bcdac-657c-47dd-9dcb-08c94a4b700d
+		summarizeBy: none
+		sourceColumn: order_approved_at
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column order_delivered_carrier_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 37b20806-02d4-4488-b7cd-aa66a5791df3
+		summarizeBy: none
+		sourceColumn: order_delivered_carrier_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column order_delivered_customer_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 3c46deb4-d79d-4255-bd33-a0c5bb293038
+		summarizeBy: none
+		sourceColumn: order_delivered_customer_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column order_estimated_delivery_date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 9fbe4ee9-db66-4d63-9211-dfe8191aa50c
+		summarizeBy: none
+		sourceColumn: order_estimated_delivery_date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition FACT_Orders = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Users\SANDE\Downloads\Data Architect Stuffs\Dataset - Brazil E-Commerce\olist_orders_dataset.csv"),[Delimiter=",", Columns=8, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"order_purchase_timestamp", type datetime}}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Changed Type",{{"order_purchase_timestamp", type date}, {"order_approved_at", type datetime}}),
+				    #"Changed Type2" = Table.TransformColumnTypes(#"Changed Type1",{{"order_approved_at", type date}, {"order_delivered_carrier_date", type datetime}}),
+				    #"Changed Type3" = Table.TransformColumnTypes(#"Changed Type2",{{"order_delivered_carrier_date", type date}, {"order_delivered_customer_date", type datetime}}),
+				    #"Changed Type4" = Table.TransformColumnTypes(#"Changed Type3",{{"order_delivered_customer_date", type date}, {"order_estimated_delivery_date", type datetime}}),
+				    #"Changed Type5" = Table.TransformColumnTypes(#"Changed Type4",{{"order_estimated_delivery_date", type date}})
+				in
+				    #"Changed Type5"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+
