@@ -142,6 +142,7 @@ Full tutorial series on the [Sandeep Rana](https://www.youtube.com/@SandeepSingh
 ## Author
 
 **Sandeep** — Power BI Developer / Analytics Engineer. 
+**Blogpost** link is: [Power BI Comprehensive Guide](https://sandeeprana502.blogspot.com/2026/11/microsoft-power-bi-comprehensive-guide.html)
 
 ## Licence
 
